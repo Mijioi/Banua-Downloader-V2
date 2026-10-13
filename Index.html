@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Banua Downloader</title>
+<style>body{background:#111;color:#fff;font-family:sans-serif;text-align:center;padding:15px}
+.box{background:#1e1e1e;padding:15px;border-radius:15px;max-width:500px;margin:auto}
+input{width:92%;padding:12px;border-radius:10px;border:none;margin:10px 0}
+button{width:96%;padding:12px;background:#ff0050;color:#fff;border:none;border-radius:10px;font-weight:bold}
+a.dl{display:block;margin-top:10px;padding:12px;background:#25F4EE;color:#000;border-radius:10px;text-decoration:none;font-weight:bold}
+video{width:100%;border-radius:10px;margin-top:10px}</style></head>
+<body><h2>⬇️ BANUA DOWNLOADER V2</h2><div class="box">
+<input id="url" placeholder="Paste link TikTok / IG / YT / FB...">
+<button onclick="go()">DOWNLOAD</button><div id="result"></div></div>
+<script>
+async function go(){
+ let link=document.getElementById('url').value;
+ if(!link) return alert('Paste dulu!');
+ document.getElementById('result').innerHTML='⏳ Loading...';
+ let r=await fetch('/api/download',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:link})});
+ let j=await r.json();
+ if(j.medias){
+   document.getElementById('result').innerHTML=j.medias.map(m=>`<a class="dl" href="${m.url}" target="_blank">⬇️ DOWNLOAD ${m.quality}</a>`).join('');
+ } else {
+   document.getElementById('result').innerHTML='❌ '+j.error;
+ }
+}
+</script></body></html>
